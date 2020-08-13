@@ -101,7 +101,7 @@ func pushInflux(az AirzoneSystem) {
 			doLog("ERROR: Can't create InfluxDB points: %s\n", err)
 			return
 		}
-		fmt.Printf("points %v\n", pt)
+		doLog("InfluxDB points %v\n", pt)
 		bp.AddPoint(pt)
 	}
 	// Write the batch
@@ -156,7 +156,7 @@ func airzoneWorker() {
 			doLog("Error reading POST Request %s\n", err.Error())
 			goto end
 		}
-		fmt.Println("DDD: Response" + string(body))
+		doLog("Airzone Response" + string(body))
 
 		airSystem = AirzoneSystem{}
 		err = json.Unmarshal(body, &airSystem)
@@ -165,7 +165,7 @@ func airzoneWorker() {
 			goto end
 		}
 		if len(airSystem.Data) > 0 {
-			fmt.Printf("# of zones found in answer: %d\n", len(airSystem.Data))
+			doLog("# of zones found in answer: %d\n", len(airSystem.Data))
 			pushInflux(airSystem)
 		} else {
 			doLog("Json answer Data structure is empty")
